@@ -48,6 +48,10 @@ class Car extends Model
             ->orderBy('start_date');
     }
 
+    public function getCarById($id){
+        return $this->where('car_id', $id)->where('company_id', 1)->where('status', 1)->where('is_deleted', '!=', 1)->first();
+    }
+
     public function getDataCar(){
         return $this->where('company_id', 1)->where('status', 1)->where('is_deleted', '!=', 1)->get();
     }

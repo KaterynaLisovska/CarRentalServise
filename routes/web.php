@@ -16,6 +16,7 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/', "\App\Http\Controllers\Front\Home@index");
 Route::post('/', "\App\Http\Controllers\Front\Home@filter");
+Route::get('/test', "\App\Http\Controllers\Front\Home@test");
 //Route::post('/bookings', "\App\Http\Controllers\Front\BookingController@filter");
 //Route::get('/bookings', "\App\Http\Controllers\Front\BookingController@filter");
 //Route::get('/bookings', "\App\Http\Controllers\Front\BookingController@index");

@@ -9,6 +9,7 @@ use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Foundation\Validation\ValidatesRequests;
 use Illuminate\Routing\Controller as BaseController;
 use Illuminate\Support\Carbon;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\View;
 
 class Home extends BaseController
@@ -104,6 +105,7 @@ class Home extends BaseController
     public function isTodayBooking($booking, $currentDate)
     {
         $day_start = Carbon::parse($currentDate)->setTime(9, 0, 0);
+
         $day_end = Carbon::parse($currentDate)->setTime(21, 0, 0);
 
         $start_date = $booking->start_date;
@@ -116,23 +118,63 @@ class Home extends BaseController
     private function getCarFreeDays($carBookings, $startDate, $endDate, $year, $month)
     {
         $days = 0;
+        $d = 0;
         if (count($carBookings) >= 1) {
             $freeDays = $this->generateDays($this->getDaysInMonth($year, $month));
             //  [true, true, ..., true]
-            foreach ($freeDays as $index => $day) {
-                $currentDate = Carbon::createFromDate()->setDate($year, $month, $index + 1);
-                foreach ($carBookings as $booking) {
-                    if ($this->isTodayBooking($booking, $currentDate)) {
-                        if ($this->isCarBusy($booking, $currentDate)) {
-                            $day = false;
-                        }
+            foreach ($carBookings as $booking) {
+                foreach ($freeDays as $index => $day) {
+                    $currentDate = Carbon::createFromDate($year, $month, $index + 1);
+//                    if ($this->isTodayBooking($booking, $currentDate)) {
+                    if ($this->isCarBusy($booking, $currentDate)) {
+                        $day = false;
+                    } else {
+                        $d++;
                     }
+//                    }
                 }
             }
             $days = count(array_filter($freeDays, function ($day) {
                 return $day;
             }));
         }
-        return $days;
+        return (31 - $d);
+    }
+
+    public function test()
+    {
+
+        Log::info("THIS text WAS printed BY Me");
+        $year = 2023;
+        $month = 1;
+
+        $car = (new Car)->getCarById(3714);
+
+        $startDate = Carbon::createFromDate($year, $month, 1)->setHour(9)->setMinute(0)->setSecond(0);
+        $endDate = Carbon::createFromDate($year, $month)->endOfMonth()->setHour(21)->setMinute(0)->setSecond(0);
+
+        $carBooking = $car->carBooking($startDate, $endDate)->get();
+        $availableDays = $this->getCarFreeDays($carBooking, $startDate, $endDate, $year, $month);
+//        $booking = $carBooking[0];
+
+        $freeDays = $this->generateDays($this->getDaysInMonth($year, $month));
+
+        $test = [];
+        foreach ($carBooking as $booking) {
+            foreach ($freeDays as $index => $day) {
+                $currentDate = Carbon::createFromDate($year, $month, $index + 1);
+                $ab = $this->isCarBusy($booking, $currentDate);
+                $bc = $this->isTodayBooking($booking, $currentDate);
+//                if ($bc) {
+                    $test[] = $currentDate->toDateString() . " " . $bc;
+//                }
+            }
+        }
+
+        dd($test);
+
+
+//        dd($carBooking[0]);
+//      }
     }
 }
