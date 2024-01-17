@@ -26,10 +26,19 @@ class Car extends Model
     public function carBooking($fromDate,$toDate)
     {
         return $this->hasMany(Booking::class, 'car_id', 'car_id')
-            ->whereDate('end_date', '<=', $toDate->format('y-m').'-31')  // Assuming 'end_date' is a date field
-            ->whereDate('start_date', '>=', $toDate->format('y-m').'2019-05-31')  // Assuming 'end_date' is a date field
+            ->whereDate('start_date', '>=', $fromDate)
+            ->whereDate('start_date', '<=', $toDate)
+            ->whereDate('end_date', '<=', $toDate)
+            ->whereDate('end_date', '>=', $fromDate)
             ->where('status','1')
             ->orderBy('start_date');
+
+        //  FILTER BY 01.01.2024
+        //  30.12.2023 -- start_date
+        //  02.01.2024 -- end_date
+        //
+        //  01.01.2024 -- start_date -- 09:00:00
+        //  01.01.2024 -- end_date -- 14:00:00
     }
 
     public function carBookingStartData($fromDate)

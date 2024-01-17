@@ -16,8 +16,8 @@
             <td class="px-2 shadow-sm ring-1 ring-zinc-200">{{ $item->year ?? '-' }}</td>
             <td class="px-2 shadow-sm ring-1 ring-zinc-200">{{ $item->color ?? '-' }}</td>
             <td class="px-2 shadow-sm ring-1 ring-zinc-200">{{ $item->brand ?? '-' }}</td>
-            <td class="px-2 shadow-sm ring-1 ring-zinc-200">{{ $item->availableDays ?? '-' }}</td>
-            <td class="px-2 shadow-sm ring-1 ring-zinc-200">{{ $item->days ?? '-' }}</td>
+            <td class="px-2 shadow-sm ring-1 ring-zinc-200 text-center">{{ $item->availableDays ?? '-' }}</td>
+            <td class="px-2 shadow-sm ring-1 ring-zinc-200 text-center">{{ $item->days ?? '-' }}</td>
         </tr>
     @endforeach
 </table>
