@@ -6,5 +6,10 @@
         <div class="list w-full">
             @include('front.cars.list')
         </div>
+{{--        <div class="flex justify-between py-10">--}}
+{{--            @if($cars->count())--}}
+{{--                {{ $cars->links() }}--}}
+{{--            @endif--}}
+{{--        </div>--}}
     </div>
 @endsection

@@ -1,11 +1,9 @@
-<form method="POST" class="formFilter flex flex-col mt-4 gap-5 rounded-sm ring-1 ring-zinc-700 mx-auto w-full"
-      onsubmit="testSubmit(event)">
+<form class="formFilter flex flex-col mt-4 gap-5 rounded-sm ring-1 ring-zinc-700 mx-auto w-full">
     @csrf
-    @method('POST')
     <h2 class="pl-4 bg-zinc-500/10 font-sans text-xl">Filters</h2>
     <div class="flex flex-row justify-between w-full">
         <div class="flex flex-col pl-4 pr-2 w-full">
-            <label for="years" class="text-xl">Years</label>
+            <label for="years" class="text-xl">Year</label>
             <select id="years" name="years" class="shadow-sm p-1 rounded-sm ring-1 ring-zinc-700">
                 <option value="2023">2023</option>
                 <option value="2022">2022</option>
@@ -30,20 +28,11 @@
     </button>
 </form>
 
-<script>
-    function testSubmit(event) {
-        event.preventDefault();
-        event.stopPropagation();
-
-        let formData = $('.formFilter').serialize();
-        $.ajax({
-            url: '/',
-            method: 'POST',
-            data: formData,
-            success: function (result) {
-                console.log(result.message);
-                $('.list').html(result.html);
-            }
-        });
-    }
-</script>
+<div id="preloader" class="hidden">
+    <div>
+        <em></em>
+        <em></em>
+        <em></em>
+        <em></em>
+    </div>
+</div>
